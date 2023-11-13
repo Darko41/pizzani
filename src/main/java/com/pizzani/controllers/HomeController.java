@@ -1,0 +1,34 @@
+package com.pizzani.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.pizzani.services.PizzaService;
+
+@Controller
+@RequestMapping("/pizzani")
+public class HomeController {
+	
+	@Autowired
+	private PizzaService pizzaService;
+	
+	@GetMapping("/home")
+	public String getIndexPage(Model model) {
+		model.addAttribute("pizzas", pizzaService.getAllPizzas());
+		model.addAttribute("pizzasSO", pizzaService.getStandOutPizzas());
+		
+		return "index";
+	}
+	
+	@GetMapping("/home-standout/id")
+	public String showStandOutPizzas(@PathVariable Long id, Model model) {
+		model.addAttribute("pizza", pizzaService.getPizzaById(id));
+		
+		return "/home-standout";
+	}
+
+}
